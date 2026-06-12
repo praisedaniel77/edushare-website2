@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduShare - Lecture Material Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+        body {
+            background: #f0f4f8;
+            color: #1e293b;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .navbar {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .logo h2 {
+            color: #0f3b5c;
+            font-size: 1.5rem;
+        }
+        .logo span {
+            color: #2c7da0;
+        }
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #334155;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+        .nav-links a:hover {
+            color: #2c7da0;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 9999px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .btn-primary {
+            background: #2c7da0;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #1f5e7a;
+            transform: translateY(-1px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #2c7da0;
+            color: #2c7da0;
+        }
+        .btn-outline:hover {
+            background: #2c7da0;
+            color: white;
+        }
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2c7da0;
+            box-shadow: 0 0 0 3px rgba(44,125,160,0.1);
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+        .file-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #e2e8f0;
+        }
+        .file-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .file-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #0f3b5c;
+        }
+        .file-meta {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin: 12px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .badge {
+            background: #e2e8f0;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .actions a, .actions button {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+        }
+        .alert {
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .search-bar input {
+            width: 280px;
+        }
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 48px;
+        }
+        .user-badge {
+            background: #2c7da0;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+        }
+        @media (max-width: 640px) {
+            .nav-flex { flex-direction: column; }
+            .search-bar input { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="container nav-flex">
+        <div class="logo">
+            <h2>📚 EduShare <span>Hub</span></h2>
+        </div>
+        <div class="nav-links" id="navLinks"></div>
+    </div>
+</div>
+
+<div class="container" id="appRoot"></div>
+
+<footer>
+    <p>© 2025 EduShare - Sharing knowledge, building futures</p>
+</footer>
+
+<script>
+    const API_BASE = 'backend.php';
+    
+    let currentUser = null;
+    let currentView = 'materials';
+    let searchQuery = '';
+    let materialsList = [];
+
+    async function apiRequest(action, method = 'GET', body = null, isFormData = false) {
+        let url = `${API_BASE}?action=${action}`;
+        let options = { method, credentials: 'same-origin' };
+        
+        if (body) {
+            if (isFormData) {
+                options.body = body;
+            } else {
+                options.headers = { 'Content-Type': 'application/json' };
+                options.body = JSON.stringify(body);
+            }
+        }
+        
+        try {
+            const response = await fetch(url, options);
+            const text = await response.text();
+            
+            // Try to parse JSON
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (e) {
+                console.error('Invalid JSON response:', text.substring(0, 200));
+                throw new Error('Server returned invalid response. Check PHP error logs.');
+            }
+            
+            if (!response.ok) {
+                throw new Error(data.error || 'Request failed');
+            }
+            return data;
+        } catch (error) {
+            console.error('API Error:', error);
+            throw error;
+        }
+    }
+
+    async function checkAuth() {
+        try {
+            const data = await apiRequest('checkAuth');
+            if (data.loggedIn) {
+                currentUser = data.user;
+            } else {
+                currentUser = null;
+            }
+        } catch (e) {
+            currentUser = null;
+        }
+        renderApp();
+    }
+
+    async function loadMaterials() {
+        try {
+            const data = await apiRequest('getMaterials');
+            materialsList = data.materials || [];
+        } catch (e) {
+            materialsList = [];
+            showMessage('Failed to load materials', 'error');
+        }
+        renderApp();
+    }
+
+    function showMessage(msg, type = 'success') {
+        const root = document.getElementById('appRoot');
+        const existing = document.querySelector('.alert');
+        if (existing) existing.remove();
+        
+        const div = document.createElement('div');
+        div.className = `alert alert-${type}`;
+        div.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i> ${msg}`;
+        root.insertBefore(div, root.firstChild);
+        setTimeout(() => div.remove(), 4000);
+    }
+
+    async function handleRegister(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            password: formData.get('password'),
+            role: formData.get('role')
+        };
+        
+        try {
+            await apiRequest('register', 'POST', data);
+            showMessage('Registration successful! Please login.');
+            currentView = 'login';
+            renderApp();
+        } catch (err) {
+            showMessage(err.message, 'error');
+        }
+    }
+
+    async function handleLogin(e) {
+        e.preventDefault();
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+        
+        try {
+            const data = await apiRequest('login', 'POST', { email, password });
+            currentUser = data.user;
+            showMessage(`Welcome ${currentUser.name}!`);
+            currentView = 'materials';
+            await loadMaterials();
+        } catch (err) {
+            showMessage(err.message, 'error');
+        }
+    }
+
+    async function handleLogout() {
+        await apiRequest('logout', 'POST');
+        currentUser = null;
+        currentView = 'materials';
+        materialsList = [];
+        renderApp();
+        showMessage('Logged out successfully');
+    }
+
+    async function handleUpload(e) {
+        e.preventDefault();
+        if (!currentUser) {
+            showMessage('Please login first', 'error');
+            return;
+        }
+        
+        const formData = new FormData(e.target);
+        formData.append('uploader_id', currentUser.id);
+        formData.append('uploader_name', currentUser.name);
+        
+        try {
+            await apiRequest('upload', 'POST', formData, true);
+            showMessage('File uploaded successfully!');
+            await loadMaterials();
+            currentView = 'materials';
+            renderApp();
+        } catch (err) {
+            showMessage(err.message, 'error');
+        }
+    }
+
+    async function handleDelete(materialId) {
+        if (!currentUser || currentUser.role !== 'admin') {
+            showMessage('Admin only action', 'error');
+            return;
+        }
+        
+        if (confirm('Delete this lecture material permanently?')) {
+            try {
+                await apiRequest(`delete&id=${materialId}`, 'DELETE');
+                showMessage('Deleted successfully');
+                await loadMaterials();
+            } catch (err) {
+                showMessage(err.message, 'error');
+            }
+        }
+    }
+
+    function filterMaterials() {
+        if (!searchQuery.trim()) return materialsList;
+        const q = searchQuery.toLowerCase();
+        return materialsList.filter(m => 
+            m.course_code.toLowerCase().includes(q) ||
+            m.course_title.toLowerCase().includes(q) ||
+            m.department.toLowerCase().includes(q)
+        );
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+
+    function renderNav() {
+        const navDiv = document.getElementById('navLinks');
+        if (!currentUser) {
+            navDiv.innerHTML = `
+                <a onclick="navigate('materials')">📚 Materials</a>
+                <a onclick="navigate('login')">🔐 Login</a>
+                <a onclick="navigate('register')">📝 Register</a>
+            `;
+        } else {
+            navDiv.innerHTML = `
+                <a onclick="navigate('materials')">📚 Materials</a>
+                <a onclick="navigate('upload')">📤 Upload</a>
+                <span class="user-badge">👤 ${escapeHtml(currentUser.name)} (${currentUser.role})</span>
+                <a onclick="handleLogout()" class="btn btn-outline" style="padding: 6px 16px;">🚪 Logout</a>
+            `;
+        }
+    }
+
+    function renderMaterials() {
+        const filtered = filterMaterials();
+        
+        return `
+            <div class="card">
+                <div class="flex-between">
+                    <h2><i class="fas fa-graduation-cap"></i> Lecture Materials</h2>
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="🔍 Search by code, title, or department..." value="${escapeHtml(searchQuery)}">
+                        <button class="btn btn-primary" id="searchBtn">🔍 Search</button>
+                        ${searchQuery ? '<button class="btn btn-outline" id="clearBtn">✖️ Clear</button>' : ''}
+                    </div>
+                </div>
+            </div>
+            <div class="grid-3" id="materialsGrid">
+                ${filtered.length === 0 ? 
+                    '<div class="card" style="grid-column:1/-1; text-align:center;">📭 No materials found. Be the first to upload!</div>' : 
+                    filtered.map(m => `
+                        <div class="file-card">
+                            <div class="file-title">${escapeHtml(m.course_title)}</div>
+                            <div>
+                                <span class="badge">📖 ${escapeHtml(m.course_code)}</span>
+                                <span class="badge">🏛️ ${escapeHtml(m.department)}</span>
+                            </div>
+                            <div class="file-meta">
+                                <span><i class="far fa-calendar"></i> ${m.upload_date}</span>
+                                <span><i class="fas fa-user"></i> ${escapeHtml(m.uploader_name)}</span>
+                                <span><i class="fas fa-file-pdf"></i> ${formatFileSize(m.file_size)}</span>
+                            </div>
+                            <div class="actions">
+                                <a href="${m.file_path}" target="_blank" class="btn btn-primary" style="display:inline-block; text-decoration:none;">
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                                ${currentUser && currentUser.role === 'admin' ? 
+                                    `<button class="btn btn-danger" onclick="handleDelete(${m.id})">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>` : ''
+                                }
+                            </div>
+                        </div>
+                    `).join('')
+                }
+            </div>
+        `;
+    }
+
+    function renderLogin() {
+        return `
+            <div class="card" style="max-width: 500px; margin: 40px auto;">
+                <h2 style="text-align:center; margin-bottom:24px;"><i class="fas fa-sign-in-alt"></i> Login to EduShare</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>📧 Email Address</label>
+                        <input type="email" name="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>🔒 Password</label>
+                        <input type="password" name="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%; padding:12px;">Login</button>
+                </form>
+                <p style="margin-top:20px; text-align:center;">
+                    New user? <a onclick="navigate('register')" style="cursor:pointer; color:#2c7da0;">Create account</a>
+                </p>
+                <p style="margin-top:12px; text-align:center; font-size:0.85rem; color:#64748b;">
+                    Demo: admin@edushare.com / password
+                </p>
+            </div>
+        `;
+    }
+
+    function renderRegister() {
+        return `
+            <div class="card" style="max-width: 550px; margin: 30px auto;">
+                <h2 style="text-align:center; margin-bottom:24px;"><i class="fas fa-user-plus"></i> Create Account</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label>👤 Full Name</label>
+                        <input type="text" name="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>📧 Email</label>
+                        <input type="email" name="email" placeholder="john@university.edu" required>
+                    </div>
+                    <div class="form-group">
+                        <label>🔒 Password</label>
+                        <input type="password" name="password" placeholder="Choose a strong password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>🎓 Role</label>
+                        <select name="role">
+                            <option value="student">Student</option>
+                            <option value="lecturer">Lecturer</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%; padding:12px;">Register</button>
+                </form>
+                <p style="margin-top:20px; text-align:center;">
+                    Already have an account? <a onclick="navigate('login')" style="cursor:pointer; color:#2c7da0;">Login</a>
+                </p>
+            </div>
+        `;
+    }
+
+    function renderUpload() {
+        if (!currentUser) {
+            return `<div class="alert alert-error">Please login to upload materials.</div>`;
+        }
+        
+        return `
+            <div class="card" style="max-width: 700px; margin: 20px auto;">
+                <h2><i class="fas fa-cloud-upload-alt"></i> Upload Lecture Material</h2>
+                <p style="color:#64748b; margin-bottom:20px;">Share your knowledge - only PDF files accepted</p>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>📚 Course Code *</label>
+                        <input type="text" name="course_code" placeholder="e.g., CS301, MATH201" required>
+                    </div>
+                    <div class="form-group">
+                        <label>📖 Course Title *</label>
+                        <input type="text" name="course_title" placeholder="e.g., Database Systems" required>
+                    </div>
+                    <div class="form-group">
+                        <label>🏛️ Department *</label>
+                        <input type="text" name="department" placeholder="e.g., Computer Science" required>
+                    </div>
+                    <div class="form-group">
+                        <label>📄 PDF File *</label>
+                        <input type="file" name="pdf_file" accept=".pdf" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%; padding:12px;">
+                        <i class="fas fa-upload"></i> Upload Material
+                    </button>
+                </form>
+            </div>
+        `;
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function navigate(view) {
+        currentView = view;
+        if (view === 'materials') {
+            loadMaterials();
+        } else if ((view === 'upload') && !currentUser) {
+            showMessage('Please login to upload', 'error');
+            currentView = 'login';
+            renderApp();
+        } else {
+            renderApp();
+        }
+    }
+
+    function renderApp() {
+        const root = document.getElementById('appRoot');
+        if (!root) return;
+        renderNav();
+
+        let content = '';
+        if (currentView === 'login') content = renderLogin();
+        else if (currentView === 'register') content = renderRegister();
+        else if (currentView === 'upload') content = renderUpload();
+        else content = renderMaterials();
+
+        root.innerHTML = content;
+
+        // Attach event handlers
+        if (currentView === 'login' && document.getElementById('loginForm')) {
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+        }
+        if (currentView === 'register' && document.getElementById('registerForm')) {
+            document.getElementById('registerForm').addEventListener('submit', handleRegister);
+        }
+        if (currentView === 'upload' && document.getElementById('uploadForm')) {
+            document.getElementById('uploadForm').addEventListener('submit', handleUpload);
+        }
+        if (currentView === 'materials') {
+            const searchBtn = document.getElementById('searchBtn');
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearBtn');
+            
+            if (searchBtn) {
+                searchBtn.onclick = () => {
+                    searchQuery = searchInput.value;
+                    renderApp();
+                };
+            }
+            if (clearBtn) {
+                clearBtn.onclick = () => {
+                    searchQuery = '';
+                    renderApp();
+                };
+            }
+            if (searchInput) {
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        searchQuery = searchInput.value;
+                        renderApp();
+                    }
+                });
+            }
+        }
+    }
+
+    // Make functions global for onclick handlers
+    window.navigate = navigate;
+    window.handleDelete = handleDelete;
+    window.handleLogout = handleLogout;
+
+    // Initialize
+    checkAuth().then(() => {
+        loadMaterials();
+    });
+</script>
+</body>
+</html>
